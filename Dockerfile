@@ -1,3 +1,6 @@
+# Dockerfile for using mongo with a QEMU user binary
+# Author: Steve Kerrison <git [at] stevekerrison.com>
+# License: Unlicense
 FROM mongo:7.0 AS mongo
 
 # Used for running AVX(2) on incompatible systems
