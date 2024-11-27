@@ -32,22 +32,28 @@ new files, and replace their original names with scripts that wrap them in
 
 ### How to build
 
-You'll need to provide `qemu-x86_64-static`, which on Debian, for example, is available through the `qemu-user-static` package. The [`multiarch/qemu-user-static` images on Docker Hub](https://hub.docker.com/r/multiarch/qemu-user-static/) don't include their own architecture's emulator (i.e. x86-64 isn't added on x86-64 systems), else I would use that.
+~~You'll need to provide `qemu-x86_64-static`, which on Debian, for example, is available through the `qemu-user-static` package. The [`multiarch/qemu-user-static` images on Docker Hub](https://hub.docker.com/r/multiarch/qemu-user-static/) don't include their own architecture's emulator (i.e. x86-64 isn't added on x86-64 systems), else I would use that.~~
 
-To build, provide the path to the QEMU binaries, for example:
+The Dockerfile uses Debian's `qemu-user-static` package to source
+`qemu-x86_64-static` and drop it into the modified `mongo` image. You don't
+need `qemu` installed on your host system when building.
+
+Building is simple. To create the image `mongo-qemu:latest`:
 
 ```
-docker build -t mongo-qemu:latest --build-context qemu=/usr/bin .
+docker build -t mongo-qemu:latest .
 ```
 
-These are static binaries, so the host OS distribution should be irrelevant.
+You can then use it locally, or push it to a registry.
 
-#### Docker Compose
+#### Mongo versions
 
-If using compose, you can omit an image name, specify a build context against
-this project directory, and provide an [additional
-context](https://docs.docker.com/reference/compose-file/build/#additional_contexts)
-to source the QEMU binary from.
+The default `mongo` version is `7.0` but you can specify the build arg
+`mongo_tag` to select another, e.g.:
+
+```
+docker build -t mongo-qemu:latest --build-arg mongo_tag=6.0 .
+```
 
 ### How to use
 
@@ -58,6 +64,6 @@ Refer to the newly built container by tag, or incorporate it into your
 
 As barely anything is changed from the official container, the entrypoint
 script will still warn you about lack of AVX support. However, the script
-doesn't error at this point, instead leaving to the `mongod` binary to crash
+doesn't error at this point, instead leaving it to the `mongod` binary to crash
 with a `SIGILL` illegal instruction. Of course, thanks to QEMU, that doesn't
 happen.
