@@ -30,9 +30,24 @@ All this image does is move the old mongo binaries from the official image to
 new files, and replace their original names with scripts that wrap them in
 `qemu-x86_64-static`.
 
+### How to use
+
+If you just want to use prebuilt packages, then you can get them from GHCR:
+
+```
+docker pull ghcr.io/stevekerrison/mongo-qemu-avx:{main_or_semver}-mongo{mongo_version}
+```
+
+Examples:
+
+```
+docker pull ghcr.io/stevekerrison/mongo-qemu-avx:v0.0.1-mongo8
+docker pull ghcr.io/stevekerrison/mongo-qemu-avx:main-mongo6
+```
+
 ### How to build
 
-~~You'll need to provide `qemu-x86_64-static`, which on Debian, for example, is available through the `qemu-user-static` package. The [`multiarch/qemu-user-static` images on Docker Hub](https://hub.docker.com/r/multiarch/qemu-user-static/) don't include their own architecture's emulator (i.e. x86-64 isn't added on x86-64 systems), else I would use that.~~
+If you want to build for yourself, here's how...
 
 The Dockerfile uses Debian's `qemu-user-static` package to source
 `qemu-x86_64-static` and drop it into the modified `mongo` image. You don't
