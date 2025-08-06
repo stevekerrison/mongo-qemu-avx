@@ -9,6 +9,10 @@ on:
   schedule:
     - cron: '37 19 * * *'
   push:
+    paths:
+      - '**.sh'
+      - 'Dockerfile'
+      - '**.yml'
     branches: [ "main" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
