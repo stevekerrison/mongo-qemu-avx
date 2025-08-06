@@ -78,10 +78,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=schedule,suffix=mongo${{ matrix.mongo }}
-            type=ref,event=branch,suffix=mongo${{ matrix.mongo }}
-            type=ref,event=tag,suffix=mongo${{ matrix.mongo }}
-            type=ref,event=pr,suffix=mongo${{ matrix.mongo }}
+            type=schedule,suffix=-mongo${{ matrix.mongo }}
+            type=ref,event=branch,suffix=-mongo${{ matrix.mongo }}
+            type=ref,event=tag,suffix=-mongo${{ matrix.mongo }}
+            type=ref,event=pr,suffix=-mongo${{ matrix.mongo }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
