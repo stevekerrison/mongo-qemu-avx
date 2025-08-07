@@ -35,15 +35,21 @@ new files, and replace their original names with scripts that wrap them in
 If you just want to use prebuilt packages, then you can get them from GHCR:
 
 ```
-docker pull ghcr.io/stevekerrison/mongo-qemu-avx:{main_or_semver}-mongo{mongo_version}
+docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo{mongo_version}
 ```
 
 Examples:
 
 ```
-docker pull ghcr.io/stevekerrison/mongo-qemu-avx:v0.0.1-mongo8
-docker pull ghcr.io/stevekerrison/mongo-qemu-avx:main-mongo6
+docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo8
+docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo7
+docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo6
 ```
+
+These are built from `HEAD` of `main` so are not stable. Check out and build
+your own (see below). They are rebuilt daily to sync up with any upstream
+changes, including security updates to containers. That is, unless this repo
+is idle for too long (60 days), then the scheduled GitHub Action is disabled.
 
 ### How to build
 
