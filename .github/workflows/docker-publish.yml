@@ -86,13 +86,20 @@ jobs:
             type=raw,value=mongo${{ matrix.mongo }}
             type=raw,value=latest,enable=${{ matrix.mongo == 7 }}
 
+      # Semver-utils doesn't coerce, so do that first...
+      - name: Coerce version to semver-compatible
+        id: semver
+        uses: matt-usurp/validate-semver@v2
+        with:
+          version: ${{ matrix.mongo }}
+
       # For mongo versions >= 8, we can avoid pulling debian-slim when building
       # because Ubuntu noble is used as the base, which has qemu 8.2 in it.
       - name: Check mongo version to choose qemu source
         id: qemu_source_check
         uses: madhead/semver-utils@latest
         with:
-          version: ${{ matrix.mongo }}
+          version: ${{ steps.semver.outputs.version }}
           satisfies: '>=8'
 
       # Build and push Docker image with Buildx (don't push on PR)
