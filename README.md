@@ -41,7 +41,8 @@ docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo{mongo_version}
 Examples:
 
 ```
-docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo8
+docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo8.2
+docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo8.0
 docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo7
 docker pull ghcr.io/stevekerrison/mongo-qemu-avx:mongo6
 ```
@@ -55,7 +56,7 @@ is idle for too long (60 days), then the scheduled GitHub Action is disabled.
 
 If you want to build for yourself, here's how...
 
-The Dockerfile uses Debian's `qemu-user-static` package to source
+The Dockerfile uses Debian/Ubuntu's `qemu-user-static` package to source
 `qemu-x86_64-static` and drop it into the modified `mongo` image. You don't
 need `qemu` installed on your host system when building.
 
@@ -75,6 +76,21 @@ The default `mongo` version is `7.0` but you can specify the build arg
 ```
 docker build -t mongo-qemu:latest --build-arg mongo_tag=6.0 .
 ```
+
+##### Avoid using the Debian image to source `qemu`
+
+If you want `mongo>=8` then its container is based on Ubuntu Noble,
+which has a sufficiently up to date `qemu` version. The build arg
+`qemu_source=mongo:${your mongo tag}` will still use two-stage
+building to install/copy `qemu`, but will do so using the same source
+image, saving you a pull:
+
+```
+docker build -t mongo-qemu:latest \
+    --build-arg mongo_tag=8.0 \
+    --build-arg qemu_source=mongo:8.0
+```
+
 
 ### How to use
 

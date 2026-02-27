@@ -4,11 +4,13 @@
 
 # Specify a different source tag if you want with --build-arg mongo_tag=...
 ARG mongo_tag=7.0
+ARG qemu_source=debian:stable-slim
 
-# Mongo builds use Ubuntu Jammy, and its version of qemu is too old to emulate
+# Mongo <= 7 builds use Ubuntu Jammy, and its version of qemu is too old to emulate
 # AVX. However, the binaries are static, so it doesn't matter if we pull them
-# in from somewhere else. We'll use Debian slim
-FROM debian:stable-slim AS qemu
+# in from somewhere else. We'll use Debian slim in such cases, otherwise we'll
+# just re-use the Mongo 8+ image...
+FROM ${qemu_source} AS qemu
 
 RUN apt-get update \
     && apt-get -y install --no-install-recommends qemu-user-static
