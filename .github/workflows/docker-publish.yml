@@ -112,7 +112,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           build-args: |
             mongo_tag=${{ matrix.mongo }}
-            qemu_source=${{ steps.qemu_source_check.outputs.satisfies && format('{0}:{1}', 'mongo', matrix.mongo) || 'debian:stable-slim' }}
+            qemu_source=${{ steps.qemu_source_check.outputs.satisfies == 'true' && format('{0}:{1}', 'mongo', matrix.mongo) || 'debian:stable-slim' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
