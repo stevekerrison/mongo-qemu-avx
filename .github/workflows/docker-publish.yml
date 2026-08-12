@@ -8,6 +8,7 @@ name: Docker
 on:
   schedule:
     - cron: '37 19 * * *'
+  workflow_dispatch:
   push:
     paths:
       - '**.sh'
