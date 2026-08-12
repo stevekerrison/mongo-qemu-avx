@@ -1,2 +1,2 @@
 #!/bin/bash
-/usr/bin/qemu-x86_64-static /usr/bin/mongod-native "$@"
+exec /usr/bin/qemu-x86_64-static /usr/bin/mongod-native "$@"
